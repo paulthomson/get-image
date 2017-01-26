@@ -50,7 +50,7 @@ main (int argc, char* argv[])
 	// OpenGL version
 	curr_stream << "\"GL_VERSION\" : \"" << ogl_version << "\",";
 	add_line(json_stream, curr_stream, indent);
-    // OpenGL major and minor versions
+        // OpenGL major and minor versions
 	curr_stream << "\"GL_MAJOR_VERSION\" : \"" << major_version << "\",";
 	add_line(json_stream, curr_stream, indent);
 	curr_stream << "\"GL_MINOR_VERSION\" : \"" << minor_version << "\",";
@@ -66,10 +66,15 @@ main (int argc, char* argv[])
 	add_line(json_stream, curr_stream, indent);
 	// Supported GLSL versions
 	curr_stream << "\"Supported_GLSL_versions\" : [";
-	int i;
-	for (i = 0; i < glsl_versions_count - 2; i++)
-		curr_stream << "\"" <<  glGetStringi(GL_SHADING_LANGUAGE_VERSION, i) << "\", ";
-	curr_stream << "\"" <<  glGetStringi(GL_SHADING_LANGUAGE_VERSION, i) << "\"]";
+	if (glsl_versions_count > 0) {
+		int i;
+		for (i = 0; i < glsl_versions_count - 2; i++)
+			curr_stream << "\"" <<  glGetStringi(GL_SHADING_LANGUAGE_VERSION, i) << "\", ";
+		curr_stream << "\"" <<  glGetStringi(GL_SHADING_LANGUAGE_VERSION, i) << "\"]";
+	}
+	else {
+		curr_stream << "]";
+	}
 	add_line(json_stream, curr_stream, indent);
 	add_line(json_stream, "}", --indent);
 	std::cout << json_stream.str() << std::endl;
